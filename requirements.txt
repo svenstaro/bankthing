@@ -1,0 +1,9 @@
+fints
+fints-url
+hug
+uwsgi
+sqlalchemy
+sqlalchemy-utils
+psycopg2
+python-dotenv
+currencies
