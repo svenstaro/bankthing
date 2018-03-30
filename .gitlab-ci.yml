@@ -13,6 +13,7 @@ stages:
   - deploy
 
 before_script:
+  - docker info
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
 
 build-image:
@@ -23,7 +24,9 @@ build-image:
 
 test:
   stage: test
-  image: $CONTAINER_TEST_IMAGE
+  image:
+    name: $CONTAINER_TEST_IMAGE
+    entrypoint: [""]
   services:
     - postgres:10
   script:
