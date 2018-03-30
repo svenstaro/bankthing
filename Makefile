@@ -5,11 +5,17 @@ venv:
 	python -m venv venv
 	venv/bin/pip install --upgrade pip
 	venv/bin/pip install --upgrade -r requirements.txt
+	venv/bin/pip install --upgrade -r dev-requirements.txt
 
 
 .PHONY: run
 run:
 	venv/bin/uwsgi --ini uwsgi.ini
+
+
+.PHONY: test
+test:
+	venv/bin/pytest
 
 
 .PHONY: clean
