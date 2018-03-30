@@ -46,6 +46,6 @@ release-image:
 
 deploy:
   stage: deploy
-  image: python3.6-stretch
+  image: python:3.6-stretch
   script:
     - pip install ansible
