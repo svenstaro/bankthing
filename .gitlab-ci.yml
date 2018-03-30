@@ -1,0 +1,44 @@
+image: "docker:18"
+services:
+  - docker:dind
+
+variables:
+  CONTAINER_TEST_IMAGE: registry.gitlab.com/svenstaro/bankthing:$CI_COMMIT_REF_NAME
+  CONTAINER_RELEASE_IMAGE: registry.gitlab.com/svenstaro/bankthing:latest
+
+stages:
+  - build
+  - test
+  - release
+  - deploy
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+
+build-image:
+  stage: build
+  script:
+    - docker build --pull -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+
+test:
+  stage: test
+  image: $CONTAINER_TEST_IMAGE
+  services:
+    - postgres:10
+  script:
+    - py.test
+
+release-image:
+  stage: release
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
+    - docker push $CONTAINER_RELEASE_IMAGE
+  only:
+    - master
+
+deploy:
+  stage: deploy
+  image: python3.6-stretch
+  script:
+    - pip install ansible
