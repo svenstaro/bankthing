@@ -12,12 +12,11 @@ stages:
   - release
   - deploy
 
-before_script:
-  - docker info
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-
 build-image:
   stage: build
+  before_script:
+    - docker info
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
     - docker pull $CONTAINER_TEST_IMAGE || true
     - docker build --cache-from $CONTAINER_TEST_IMAGE -t $CONTAINER_TEST_IMAGE .
@@ -35,6 +34,9 @@ test:
 
 release-image:
   stage: release
+  before_script:
+    - docker info
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   script:
     - docker pull $CONTAINER_TEST_IMAGE
     - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_RELEASE_IMAGE
