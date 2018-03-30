@@ -1,14 +1,14 @@
-FROM python:3
+FROM python:3.6-stretch
 
-RUN mkdir -p /usr/scr/app
-WORKDIR /usr/src/app
+COPY requirements.txt /requirements.txt
+RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir -r /requirements.txt
+RUN rm /requirements.txt
 
-COPY requirements.txt /usr/src/app
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir  -r requirements.txt
+COPY uwsgi_docker.ini /uwsgi_docker.ini
 
-COPY . .
+COPY bankthing /app/bankthing
+WORKDIR /app
 
-EXPOSE 5000
-
-CMD ["uwsgi", "--ini", "/usr/src/app/uwsgi.ini"]
+EXPOSE 8080
+ENTRYPOINT ["uwsgi", "--ini", "/uwsgi_docker.ini"]
