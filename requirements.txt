@@ -7,3 +7,7 @@ sqlalchemy-utils
 psycopg2
 python-dotenv
 currencies
+
+# Testing stuff
+pytest
+pytest-colordots

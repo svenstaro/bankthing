@@ -8,6 +8,7 @@ RUN rm /requirements.txt
 COPY uwsgi_docker.ini /uwsgi_docker.ini
 
 COPY bankthing /app/bankthing
+COPY tests /app/tests
 WORKDIR /app
 
 EXPOSE 8080

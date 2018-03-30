@@ -30,7 +30,7 @@ test:
   services:
     - postgres:10
   script:
-    - py.test
+    - pytest
 
 release-image:
   stage: release
